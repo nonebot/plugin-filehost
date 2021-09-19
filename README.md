@@ -1,2 +1,7 @@
-# nonebot-plugin-filehost
-A HTTP static file hosting plugin for NoneBot2, which provides an graceful solution for cross-machine file transfer.
+# filehost
+
+## How to start
+
+1. generate project using `nb create` .
+2. writing your plugins under `src/plugins` folder.
+3. run your bot using `nb run` .
