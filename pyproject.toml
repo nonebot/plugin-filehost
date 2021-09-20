@@ -1,17 +1,24 @@
 [tool.poetry]
-name = "filehost"
+name = "nonebot-plugin-filehost"
 version = "0.1.0"
-description = "filehost"
-authors = []
+description = "A HTTP static file hosting plugin for NoneBot2, which provides an graceful solution for cross-machine file transfer."
+license = "MIT"
+authors = ["Mix <mnixry@users.noreply.github.com>"]
 readme = "README.md"
+repository = "https://github.com/mnixry/nonebot-plugin-filehost"
+packages = [{ include = './src/plugins/nonebot_plugin_filehost' }]
 
 [tool.poetry.dependencies]
-python = "^3.7"
-nonebot2 = "^2.0.0.a1"
-nb-cli = "^0.1.0"
+python = "^3.7.3"
+nonebot2 = "^2.0.0-alpha.15"
 
 [tool.poetry.dev-dependencies]
-nonebot-test = "^0.1.0"
+nb-cli = "^0.5.0"
+flake8 = "^3.9.2"
+black = "^21.9b0"
+mypy = "^0.910"
+nonebot-plugin-test = "^0.3.0"
+nonebot-adapter-cqhttp = "^2.0.0-alpha.15"
 
 [nonebot.plugins]
 plugins = []
