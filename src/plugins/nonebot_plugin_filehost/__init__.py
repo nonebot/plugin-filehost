@@ -23,12 +23,12 @@ driver = get_driver()
 
 
 if not isinstance(driver, FastAPIDriver):
-    raise ValueError("Now filehost only support fastapi driver")
+    raise ValueError("FileHost supports FastAPI driver only")
 
 hosting_config = Config.parse_obj(driver.config.dict())
 export_namespace = export()
 
-temporary_dir = TemporaryDirectory(prefix="nonebot-filehost")
+temporary_dir = TemporaryDirectory(prefix="filehost-")
 
 
 @export_namespace
@@ -61,7 +61,7 @@ driver.server_app.mount(
 
 
 def cleanup():
-    logger.debug(f"Program exit singal received, Start cleanup up {temporary_dir}")
+    logger.debug(f"Exit singal received, Start cleaning up {temporary_dir}")
     temporary_dir.cleanup()
 
 
@@ -106,7 +106,7 @@ class FileHost(BaseModel):
                         logger.opt(colors=True).warning(
                             f"FileHost failed to create "
                             f"<y>{hosting_config.LINK_TYPE.value}</y> link: "
-                            f"<r><b>{e.errno=}</b> {e.strerror}</r>, "
+                            f"<r><b>errno={e.errno}</b> {e.strerror}</r>, "
                             "fallback to copy file."
                         )
                         shutil.copyfile(file_path, tmpfile_path)
@@ -128,7 +128,7 @@ class FileHost(BaseModel):
             if hosting_config.FALLBACK_HOST is None:
                 raise ValueError(
                     "No fallback host specified, "
-                    "and current request has no host header"
+                    "and current request has no host header."
                 )
             base_url = urljoin(hosting_config.FALLBACK_HOST, f"/filehost/{self.id}")
         else:
