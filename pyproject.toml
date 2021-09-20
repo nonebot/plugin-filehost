@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot-plugin-filehost"
-version = "0.1.0"
+version = "0.1.1"
 description = "A HTTP static file hosting plugin for NoneBot2, which provides an graceful solution for cross-machine file transfer."
 license = "MIT"
 authors = ["Mix <mnixry@users.noreply.github.com>"]
