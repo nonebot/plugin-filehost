@@ -2,6 +2,9 @@
     "python.pythonPath": ".venv/bin/python",
     "python.analysis.completeFunctionParens": true,
     "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportPrivateImportUsage": "warning"
+    },
     "python.formatting.provider": "black",
     "python.languageServer": "Pylance",
     "python.linting.flake8Enabled": true,
