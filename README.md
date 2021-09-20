@@ -2,6 +2,15 @@
 
 > **NoneBot2 的 HTTP 静态文件托管插件，为跨机文件传输提供了优雅的解决方案**
 
+[![PyPI](https://img.shields.io/pypi/v/nonebot-plugin-filehost?style=for-the-badge)](https://pypi.org/project/nonebot-plugin-filehost/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/nonebot-plugin-filehost?style=for-the-badge)
+
+[![GitHub issues](https://img.shields.io/github/issues/mnixry/nonebot-plugin-filehost)](https://github.com/mnixry/nonebot-plugin-filehost/issues)
+[![GitHub stars](https://img.shields.io/github/stars/mnixry/nonebot-plugin-filehost)](https://github.com/mnixry/nonebot-plugin-filehost/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/mnixry/nonebot-plugin-filehost)](https://github.com/mnixry/nonebot-plugin-filehost/network)
+[![GitHub license](https://img.shields.io/github/license/mnixry/nonebot-plugin-filehost)](https://github.com/mnixry/nonebot-plugin-filehost/blob/main/LICENSE)
+![Lines of code](https://img.shields.io/tokei/lines/github/mnixry/nonebot-plugin-filehost)
+
 ---
 
 ## 优势
@@ -54,6 +63,26 @@ nb plugin install nonebot-plugin-filehost
 ### 使用插件
 
 - 请前往[示例插件](./src/plugins/testing/__init__.py)进行查看
+
+### 进行配置
+
+本插件支持以下配置项
+
+- `FILEHOST_FALLBACK_HOST`
+  - 当请求不包含`Host`头或者上下文变量序列化失败时使用的主机地址
+  - 默认为`None`, 示例值为`http://localhost:8080`
+  
+- `FILEHOST_LINK_FILE`
+  - 使用文件系统链接代替文件复制, 可以提升临时文件创建速度
+  - 默认为`True`,同时支持`bool`和`int`类型
+    - 当为`bool`时, 无条件启用链接
+    - 当为`int`时, 当文件字节数大于或等于该数时启用链接, 低于时使用复制
+
+- `FILEHOST_LINK_TYPE`
+  - 指定使用的链接类型, 有`hard`和`soft`两个可选值
+    - `hard`: 建立硬链接
+    - `soft`: 链接软链接 (符号链接)
+  - 默认为`hard`
 
 ## 开源许可
 
