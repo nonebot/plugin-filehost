@@ -11,6 +11,7 @@ packages = [{ include = './src/plugins/nonebot_plugin_filehost' }]
 [tool.poetry.dependencies]
 python = "^3.7.3"
 nonebot2 = "^2.0.0-alpha.15"
+aiofiles = "^0.7.0"
 
 [tool.poetry.dev-dependencies]
 nb-cli = "^0.5.0"
@@ -21,7 +22,7 @@ nonebot-plugin-test = "^0.3.0"
 nonebot-adapter-cqhttp = "^2.0.0-alpha.15"
 
 [nonebot.plugins]
-plugins = []
+plugins = ["nonebot_plugin_test"]
 plugin_dirs = ["src/plugins"]
 
 [build-system]

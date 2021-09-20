@@ -2,7 +2,7 @@
 name = "aiofiles"
 version = "0.7.0"
 description = "File support for asyncio."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6,<4.0"
 
@@ -823,7 +823,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.3"
-content-hash = "db9c5478f2c5ea78901909b80690b77565bd75f7b29b15af2d8b99cfef2c78ce"
+content-hash = "a9dc0bae0ae7eb21bd9bb4a930b2265691c07b3d64fd6b8b4c40a0b2007e56bf"
 
 [metadata.files]
 aiofiles = [
