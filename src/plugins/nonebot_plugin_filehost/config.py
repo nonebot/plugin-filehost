@@ -12,9 +12,9 @@ class LinkType(str, Enum):
 
 
 class Config(BaseConfig):
-    FALLBACK_HOST: Optional[AnyHttpUrl] = Field(alias="filehost_fallback_host")
-    LINK_FILE: Union[PositiveInt, bool] = Field(True, alias="filehost_link_file")
-    LINK_TYPE: LinkType = Field(LinkType.hard, alias="filehost_link_type")
+    FALLBACK_HOST: Optional[AnyHttpUrl] = Field(env="filehost_fallback_host")
+    LINK_FILE: Union[PositiveInt, bool] = Field(True, env="filehost_link_file")
+    LINK_TYPE: LinkType = Field(LinkType.hard, env="filehost_link_type")
 
     class Config:
         extra = "ignore"
