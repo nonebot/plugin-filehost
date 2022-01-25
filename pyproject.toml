@@ -10,19 +10,18 @@ packages = [{ include = './src/plugins/nonebot_plugin_filehost' }]
 
 [tool.poetry.dependencies]
 python = "^3.7.3"
-nonebot2 = "^2.0.0-alpha.15"
-aiofiles = "^0.7.0"
+nonebot2 = "^2.0.0-beta.1"
 
 [tool.poetry.dev-dependencies]
-nb-cli = "^0.5.0"
+nb-cli = "^0.6.4"
 flake8 = "^3.9.2"
 black = "^21.9b0"
 mypy = "^0.910"
-nonebot-plugin-test = "^0.3.0"
-nonebot-adapter-cqhttp = "^2.0.0-alpha.15"
+nonebot-adapter-onebot = "^2.0.0-beta.1"
+nonebug = "^0.2.1"
 
 [nonebot.plugins]
-plugins = ["nonebot_plugin_test"]
+plugins = []
 plugin_dirs = ["src/plugins"]
 
 [build-system]
