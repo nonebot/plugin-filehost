@@ -27,4 +27,9 @@
     "git.autofetch": true,
     "git.enableSmartCommit": true,
     "python.analysis.diagnosticMode": "workspace",
+    "cSpell.words": [
+        "ASGI",
+        "pydantic",
+        "starlette"
+    ],
 }
