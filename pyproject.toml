@@ -6,7 +6,7 @@ license = "MIT"
 authors = ["Mix <mnixry@users.noreply.github.com>"]
 readme = "README.md"
 repository = "https://github.com/mnixry/nonebot-plugin-filehost"
-packages = [{ include = './src/plugins/nonebot_plugin_filehost' }]
+packages = [{ include = 'nonebot_plugin_filehost' }]
 
 [tool.poetry.dependencies]
 python = "^3.7.3"
@@ -21,7 +21,7 @@ nonebot-adapter-onebot = "^2.0.0-beta.1"
 nonebug = "^0.2.1"
 
 [nonebot.plugins]
-plugins = []
+plugins = ['nonebot_plugin_filehost']
 plugin_dirs = ["src/plugins"]
 
 [build-system]
