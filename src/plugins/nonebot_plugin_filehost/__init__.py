@@ -8,12 +8,13 @@ from tempfile import TemporaryDirectory
 from typing import Union
 from urllib.parse import ParseResult, urljoin
 
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from nonebot import get_driver
-from nonebot.drivers.fastapi import Driver as FastAPIDriver
+from nonebot.drivers import ReverseDriver
 from nonebot.log import logger
 from nonebot.plugin.export import export
-from pydantic.main import BaseModel, Extra
+from pydantic import BaseModel, Extra
 from starlette.types import ASGIApp, Receive, Scope, Send
 
 from .config import Config, LinkType
@@ -22,7 +23,7 @@ from .models import RequestScopeInfo
 driver = get_driver()
 
 
-if not isinstance(driver, FastAPIDriver):
+if not isinstance(driver, ReverseDriver) or not isinstance(driver.server_app, FastAPI):
     raise ValueError("FileHost supports FastAPI driver only")
 
 hosting_config = Config.parse_obj(driver.config.dict())

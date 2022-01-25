@@ -1,7 +1,7 @@
 from io import BytesIO
 from pathlib import Path
 
-from nonebot.adapters.cqhttp import Bot, MessageEvent, MessageSegment
+from nonebot.adapters.onebot.v11 import MessageSegment
 from nonebot.permission import SUPERUSER
 from nonebot.plugin import on_command
 from nonebot_plugin_filehost import FileHost, HostContextVarMiddleware
@@ -20,21 +20,21 @@ request_resource = on_command(
 
 
 @scope_browse.handle()
-async def _(bot: Bot, event: MessageEvent):
+async def _():
     await scope_browse.send(
         str(HostContextVarMiddleware.current_scope.get()),
     )
 
 
 @request_browse.handle()
-async def _(bot: Bot, event: MessageEvent):
+async def _():
     await request_browse.send(
         str(HostContextVarMiddleware.current_request.get()),
     )
 
 
 @request_resource.handle()
-async def _(bot: Bot, event: MessageEvent):
+async def _():
     res_path = Path(__file__).parent / "res.jpg"
     await request_resource.send(
         f"Start test file {res_path=} sending, content:"
