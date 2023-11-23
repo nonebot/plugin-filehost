@@ -11,7 +11,8 @@ from uuid import uuid4
 import anyio
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from nonebot import get_asgi, get_driver, logger
+from nonebot import get_driver, logger
+from nonebot.drivers import ASGIMixin
 from nonebot.plugin import PluginMetadata
 from starlette.types import ASGIApp, Receive, Scope, Send
 
@@ -57,7 +58,7 @@ class HostContextVarMiddleware:
 
 temporary_dir = TemporaryDirectory(prefix="filehost-", dir=host_config.TMP_DIR)
 
-if isinstance((app := get_asgi()), FastAPI):
+if isinstance(driver, ASGIMixin) and isinstance((app := driver.server_app), FastAPI):
     app.add_middleware(HostContextVarMiddleware)
     app.mount(
         path="/filehost",
