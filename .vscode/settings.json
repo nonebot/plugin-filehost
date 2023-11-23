@@ -22,4 +22,12 @@
     },
     "files.encoding": "utf8",
     "python.analysis.diagnosticMode": "workspace",
+    "cSpell.words": [
+        "anyio",
+        "ASGI",
+        "fastapi",
+        "filehost",
+        "nonebot",
+        "pydantic"
+    ],
 }
