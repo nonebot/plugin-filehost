@@ -1,12 +1,12 @@
-from typing import Optional, Union
 from enum import Enum
+from typing import Optional, Union
 
 from nonebot.config import BaseConfig
+from pydantic import AnyHttpUrl, PositiveInt
 from pydantic.fields import Field
-from pydantic import PositiveInt, AnyHttpUrl
 
 
-class LinkType(str, Enum):
+class LinkKind(str, Enum):
     hard = "hard"
     soft = "soft"
 
@@ -14,7 +14,7 @@ class LinkType(str, Enum):
 class Config(BaseConfig):
     FALLBACK_HOST: Optional[AnyHttpUrl] = Field(env="filehost_fallback_host")
     LINK_FILE: Union[PositiveInt, bool] = Field(True, env="filehost_link_file")
-    LINK_TYPE: LinkType = Field(LinkType.hard, env="filehost_link_type")
+    LINK_TYPE: LinkKind = Field(LinkKind.hard, env="filehost_link_type")
 
     class Config:
         extra = "ignore"

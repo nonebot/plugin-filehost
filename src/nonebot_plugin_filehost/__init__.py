@@ -1,4 +1,3 @@
-import atexit
 import shutil
 from contextvars import ContextVar
 from io import BufferedReader, BytesIO
@@ -11,19 +10,19 @@ from urllib.parse import ParseResult, urljoin
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from nonebot import get_driver
-from nonebot.drivers import ReverseDriver
+from nonebot.drivers import ASGIMixin
 from nonebot.log import logger
 from pydantic import BaseModel, Extra
 from starlette.types import ASGIApp, Receive, Scope, Send
 
-from .config import Config, LinkType
+from .config import Config, LinkKind
 from .models import RequestScopeInfo
 
 driver = get_driver()
 
 
-if not isinstance(driver, ReverseDriver) or not isinstance(driver, FastAPI):
-    raise ValueError("FileHost supports FastAPI driver only")
+if not (isinstance(driver, ASGIMixin) and isinstance(driver.server_app, FastAPI)):
+    raise NotImplementedError("Only FastAPI driver is supported for now.")
 
 hosting_config = Config.parse_obj(driver.config.dict())
 
@@ -59,15 +58,12 @@ driver.server_app.mount(
 )
 
 
+@driver.on_shutdown
 def cleanup():
-    logger.debug(f"Exit singal received, Start cleaning up {temporary_dir}")
+    logger.debug(f"Cleaning up temporary directory {temporary_dir.name}...")
     temporary_dir.cleanup()
 
 
-atexit.register(cleanup)
-
-
-@export_namespace
 class FileHost(BaseModel):
     @staticmethod
     def new(source: Union[BytesIO, BufferedReader, Path, bytes, str]):
@@ -97,7 +93,7 @@ class FileHost(BaseModel):
                 )
                 if file_path.stat().st_size >= link_limit:
                     try:
-                        if hosting_config.LINK_TYPE is LinkType.hard:
+                        if hosting_config.LINK_TYPE is LinkKind.hard:
                             file_path.link_to(tmpfile_path)
                         else:
                             file_path.symlink_to(tmpfile_path)
