@@ -11,13 +11,22 @@ from uuid import uuid4
 import anyio
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from nonebot import get_driver
-from nonebot.drivers import ASGIMixin
-from nonebot.log import logger
+from nonebot import get_asgi, get_driver, logger
+from nonebot.plugin import PluginMetadata
 from starlette.types import ASGIApp, Receive, Scope, Send
 
 from .config import Config, LinkKind
 from .models import RequestScopeInfo
+
+__plugin_meta__ = PluginMetadata(
+    name="文件托管支持",
+    description="提供跨机文件传输支持，通过 HTTP 服务托管文件",
+    usage="见文档 (https://github.com/nonebot/plugin-filehost#readme)",
+    type="library",
+    homepage="https://github.com/nonebot/plugin-filehost",
+    config=Config,
+    supported_adapters=None,
+)
 
 driver = get_driver()
 host_config = Config.parse_obj(driver.config.dict())
@@ -48,9 +57,9 @@ class HostContextVarMiddleware:
 
 temporary_dir = TemporaryDirectory(prefix="filehost-", dir=host_config.TMP_DIR)
 
-if isinstance(driver, ASGIMixin) and isinstance(driver.server_app, FastAPI):
-    driver.server_app.add_middleware(HostContextVarMiddleware)
-    driver.server_app.mount(
+if isinstance((app := get_asgi()), FastAPI):
+    app.add_middleware(HostContextVarMiddleware)
+    app.mount(
         path="/filehost",
         app=StaticFiles(directory=temporary_dir.name),
         name="filehost",
@@ -85,8 +94,9 @@ class FileHost:
 
     def to_url_sync(self):
         """
-        Get the URL of the file hosted with sync I/O.
-        NOTE: This method may block the event loop, please only use it only when necessary.
+        使用同步 I/O 获取文件托管的 URL。
+
+        NOTE: 这个方法可能会阻塞事件循环，请不要在异步上下文中调用。
         """
         if isinstance(self.source, bytes):
             file_size = self._bytes_handler(self.source)
@@ -106,7 +116,7 @@ class FileHost:
 
     async def to_url(self):
         """
-        Get the URL of the file hosted with async I/O.
+        获取文件托管的 URL。
         """
         if isinstance(self.source, bytes):
             file_size = await self._async_bytes_handler(self.source)
@@ -197,3 +207,6 @@ class FileHost:
 
     async def _async_buffered_reader_handler(self, source: BufferedReader):
         return await self._async_path_handler(Path(source.name))
+
+
+__all__ = ["FileHost"]
