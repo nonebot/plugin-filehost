@@ -1,4 +1,5 @@
 from enum import Enum
+from pathlib import Path
 from typing import Optional, Union
 
 from nonebot.config import BaseConfig
@@ -8,13 +9,13 @@ from pydantic.fields import Field
 
 class LinkKind(str, Enum):
     hard = "hard"
-    soft = "soft"
+    symbolic = "symbolic"
 
 
 class Config(BaseConfig):
-    FALLBACK_HOST: Optional[AnyHttpUrl] = Field(env="filehost_fallback_host")
+    HOST_OVERRIDE: Optional[AnyHttpUrl] = Field(None, env="filehost_host_override")
+
     LINK_FILE: Union[PositiveInt, bool] = Field(True, env="filehost_link_file")
     LINK_TYPE: LinkKind = Field(LinkKind.hard, env="filehost_link_type")
 
-    class Config:
-        extra = "ignore"
+    TMP_DIR: Optional[Path] = Field(env="filehost_tmp_dir")
