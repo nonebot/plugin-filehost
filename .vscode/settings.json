@@ -1,20 +1,16 @@
 {
-    "python.pythonPath": ".venv/bin/python",
     "python.analysis.completeFunctionParens": true,
     "python.analysis.typeCheckingMode": "basic",
-    "python.analysis.diagnosticSeverityOverrides": {
-        "reportPrivateImportUsage": "warning"
-    },
-    "python.formatting.provider": "black",
     "python.languageServer": "Pylance",
-    "python.linting.flake8Enabled": true,
-    "python.linting.mypyEnabled": true,
+    "python.testing.pytestEnabled": true,
     "[python]": {
         "editor.codeActionsOnSave": {
             "source.organizeImports": true,
-            "source.fixAll": true
-        }
+            "source.fixAll.ruff": true
+        },
+        "editor.defaultFormatter": "ms-python.black-formatter"
     },
+    "autoDocstring.customTemplatePath": ".vscode/docstring.mustache",
     "editor.formatOnSave": true,
     "files.watcherExclude": {
         "**/.git/objects/**": true,
@@ -22,14 +18,8 @@
         "**/node_modules/**": true,
         "**/.hg/store/**": true,
         "**/.venv/**": true,
-        "**/.mypy_cache/**": true,
+        "**/.mypy_cache/**": true
     },
-    "git.autofetch": true,
-    "git.enableSmartCommit": true,
+    "files.encoding": "utf8",
     "python.analysis.diagnosticMode": "workspace",
-    "cSpell.words": [
-        "ASGI",
-        "pydantic",
-        "starlette"
-    ],
 }
