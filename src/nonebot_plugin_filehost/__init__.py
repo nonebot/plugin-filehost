@@ -16,8 +16,8 @@ from nonebot.drivers import ASGIMixin
 from nonebot.plugin import PluginMetadata
 from starlette.types import ASGIApp, Receive, Scope, Send
 
-from .config import Config, LinkKind
 from .models import RequestScopeInfo
+from .plugin_config import FileHostConfig, LinkKind, config
 
 __plugin_meta__ = PluginMetadata(
     name="文件托管支持",
@@ -25,12 +25,14 @@ __plugin_meta__ = PluginMetadata(
     usage="见文档 (https://github.com/nonebot/plugin-filehost#readme)",
     type="library",
     homepage="https://github.com/nonebot/plugin-filehost",
-    config=Config,
+    config=FileHostConfig,
     supported_adapters=None,
 )
 
 driver = get_driver()
-host_config = Config.parse_obj(driver.config.dict())
+
+
+temporary_dir = TemporaryDirectory(prefix="filehost-", dir=config.filehost_tmp_dir)
 
 
 class HostContextVarMiddleware:
@@ -41,7 +43,7 @@ class HostContextVarMiddleware:
         self.app = app
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
-        if host_config.HOST_OVERRIDE is None and scope["type"] in {
+        if config.filehost_host_override is None and scope["type"] in {
             "http",
             "websocket",
         }:
@@ -55,8 +57,6 @@ class HostContextVarMiddleware:
                 type(self).current_request.set(request_info)
         await self.app(scope, receive, send)
 
-
-temporary_dir = TemporaryDirectory(prefix="filehost-", dir=host_config.TMP_DIR)
 
 if isinstance(driver, ASGIMixin) and isinstance((app := driver.server_app), FastAPI):
     app.add_middleware(HostContextVarMiddleware)
@@ -136,8 +136,10 @@ class FileHost:
         return self._generate_url()
 
     def _generate_url(self):
-        if host_config.HOST_OVERRIDE is not None:
-            base_url = urljoin(host_config.HOST_OVERRIDE, f"./filehost/{self.filename}")
+        if config.filehost_host_override is not None:
+            base_url = urljoin(
+                config.filehost_host_override, f"./filehost/{self.filename}"
+            )
         elif request := HostContextVarMiddleware.current_request.get(None):
             base_url = ParseResult(
                 scheme=(
@@ -176,25 +178,25 @@ class FileHost:
     def _path_handler(self, source: Path):
         file_size = source.stat().st_size
 
-        if host_config.LINK_FILE is False or (
-            isinstance(host_config.LINK_FILE, int)
-            and file_size >= host_config.LINK_FILE
+        if config.filehost_link_file is False or (
+            isinstance(config.filehost_link_file, int)
+            and file_size >= config.filehost_link_file
         ):
             shutil.copyfile(source, self.file_dir)
         else:
             try:
-                if host_config.LINK_TYPE is LinkKind.hard:
+                if config.filehost_link_type is LinkKind.hard:
                     # NOTE: https://bugs.python.org/issue39950
                     if sys.version_info >= (3, 10):
                         source.hardlink_to(self.file_dir)
                     else:
                         source.link_to(self.file_dir)
-                elif host_config.LINK_TYPE is LinkKind.symbolic:
+                elif config.filehost_link_type is LinkKind.symbolic:
                     source.symlink_to(self.file_dir)
             except OSError as e:
                 logger.opt(colors=True).warning(
                     f"FileHost failed to create "
-                    f"<y>{host_config.LINK_TYPE.value}</y> <r>{e}</r>, "
+                    f"<y>{config.filehost_link_type.value}</y> <r>{e}</r>, "
                     "fallback to copy file."
                 )
                 shutil.copyfile(source, self.file_dir)
