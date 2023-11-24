@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-filehost"
-version = "1.0.1"
+version = "1.0.2"
 description = "Effortless static file hosting plugin for NoneBot2."
 authors = [{ name = "Mix", email = "32300164+mnixry@users.noreply.github.com" }]
 dependencies = ["nonebot2[fastapi]>=2.0.0", "anyio>=3"]
