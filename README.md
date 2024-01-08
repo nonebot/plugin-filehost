@@ -50,6 +50,31 @@ nb plugin install nonebot-plugin-filehost
 
 - `FILEHOST_TMP_DIR`：临时文件存放目录, 默认为操作系统的临时目录
 
+### 在代码中使用
+
+托管已有文件：
+
+```python
+from pathlib import Path
+from nonebot_plugin_filehost import FileHost
+
+url = await FileHost(Path("/path/to/your/file")).to_url()
+```
+
+托管 `bytes` 或者 `BytesIO`：
+
+```python
+from nonebot_plugin_filehost import FileHost
+
+url = await FileHost(some_bytes).to_url()
+```
+
+使用同步代码：
+
+```python
+url = FileHost().to_url_sync()
+```
+
 ### TODO
 
 - [ ] 支持自定义文件服务访问路径
