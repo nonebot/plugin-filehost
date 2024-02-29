@@ -8,7 +8,7 @@ from typing import Optional, Union
 from urllib.parse import ParseResult, urljoin
 from uuid import uuid4
 
-import anyio
+import anyio.to_thread
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from nonebot import get_driver, logger
