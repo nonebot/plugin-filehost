@@ -138,7 +138,7 @@ class FileHost:
     def _generate_url(self):
         if config.filehost_host_override is not None:
             base_url = urljoin(
-                config.filehost_host_override, f"./filehost/{self.filename}"
+                str(config.filehost_host_override), f"./filehost/{self.filename}"
             )
         elif request := HostContextVarMiddleware.current_request.get(None):
             base_url = ParseResult(
