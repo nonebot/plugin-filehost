@@ -2,7 +2,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Optional, Union
 
-from nonebot import get_driver
+from nonebot import get_plugin_config
 from pydantic import AnyHttpUrl, BaseModel, PositiveInt
 
 
@@ -20,4 +20,4 @@ class FileHostConfig(BaseModel):
     filehost_tmp_dir: Optional[Path] = None
 
 
-config = FileHostConfig.parse_obj(get_driver().config)
+config = get_plugin_config(FileHostConfig)

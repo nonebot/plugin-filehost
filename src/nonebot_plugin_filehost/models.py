@@ -1,6 +1,7 @@
 from typing import Mapping, Optional, Sequence, Tuple
 
-from pydantic import BaseModel, Extra, IPvAnyAddress
+from nonebot.compat import PYDANTIC_V2
+from pydantic import BaseModel, IPvAnyAddress
 from starlette.datastructures import Headers
 from typing_extensions import Literal
 
@@ -33,8 +34,15 @@ class RequestScopeInfo(BaseModel):
     Reference: https://www.uvicorn.org/#http-scope
     """
 
-    class Config:
-        extra = Extra.allow
+    if PYDANTIC_V2:
+        from pydantic import ConfigDict
+
+        model_config = ConfigDict(extra="allow")
+
+    else:
+
+        class Config:
+            extra = "allow"
 
     asgi: Mapping[str, str]
 
