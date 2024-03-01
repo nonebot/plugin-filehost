@@ -8,6 +8,15 @@ requires-python = ">=3.8"
 readme = "README.md"
 license = { text = "MIT" }
 
+[tool.pyright]
+pythonVersion = "3.8"
+pythonPlatform = "All"
+defineConstant = { PYDANTIC_V2 = true }
+
+typeCheckingMode = "basic"
+reportShadowedImports = false
+disableBytesTypePromotions = true
+
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
