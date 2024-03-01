@@ -1,12 +1,9 @@
 from typing import Mapping, Optional, Sequence, Tuple
 
-from nonebot.compat import PYDANTIC_V2
+from nonebot.compat import PYDANTIC_V2, ConfigDict
 from pydantic import BaseModel, IPvAnyAddress
 from starlette.datastructures import Headers
 from typing_extensions import Literal
-
-if PYDANTIC_V2:
-    from pydantic import ConfigDict
 
 
 class RequestHeaders(Headers):
