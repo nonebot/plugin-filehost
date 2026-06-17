@@ -3,13 +3,38 @@ name = "nonebot-plugin-filehost"
 version = "1.1.1"
 description = "Effortless static file hosting plugin for NoneBot2."
 authors = [{ name = "Mix", email = "32300164+mnixry@users.noreply.github.com" }]
-dependencies = ["nonebot2[fastapi]>=2.2.0", "anyio>=3"]
-requires-python = ">=3.8"
+dependencies = [
+    "nonebot2[fastapi]>=2.4.0",
+    "anyio>=3",
+]
+requires-python = ">=3.9"
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["nonebot", "nonebot2", "filehost", "static-files", "fastapi"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Communications :: Chat",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+]
+
+[project.urls]
+Homepage = "https://github.com/nonebot/plugin-filehost"
+Repository = "https://github.com/nonebot/plugin-filehost"
+Documentation = "https://github.com/nonebot/plugin-filehost#readme"
+Issues = "https://github.com/nonebot/plugin-filehost/issues"
 
 [tool.pyright]
-pythonVersion = "3.8"
+pythonVersion = "3.9"
 pythonPlatform = "All"
 defineConstant = { PYDANTIC_V2 = true }
 
@@ -18,5 +43,11 @@ reportShadowedImports = false
 disableBytesTypePromotions = true
 
 [build-system]
-requires = ["pdm-backend"]
+requires = ["pdm-backend>=2.4.0"]
 build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.build]
+includes = ["src"]

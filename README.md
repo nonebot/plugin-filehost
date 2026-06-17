@@ -43,7 +43,7 @@ nb plugin install nonebot-plugin-filehost
 
 - `FILEHOST_LINK_TYPE`
 
-  - 指定使用的链接类型, 有`hard`和`soft`两个可选值
+  - 指定使用的链接类型, 有`hard`和`symbolic`两个可选值
     - `hard`: 建立硬链接
     - `symbolic`: 建立软链接
   - 默认为`hard`
@@ -72,7 +72,10 @@ url = await FileHost(some_bytes).to_url()
 使用同步代码：
 
 ```python
-url = FileHost().to_url_sync()
+from pathlib import Path
+from nonebot_plugin_filehost import FileHost
+
+url = FileHost(Path("/path/to/your/file")).to_url_sync()
 ```
 
 ### TODO

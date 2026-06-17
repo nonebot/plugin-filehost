@@ -12,6 +12,7 @@ import anyio.to_thread
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from nonebot import get_driver, logger
+from nonebot.compat import type_validate_python
 from nonebot.drivers import ASGIMixin
 from nonebot.plugin import PluginMetadata
 from starlette.types import ASGIApp, Receive, Scope, Send
@@ -22,7 +23,11 @@ from .plugin_config import FileHostConfig, LinkKind, config
 __plugin_meta__ = PluginMetadata(
     name="文件托管支持",
     description="提供跨机文件传输支持，通过 HTTP 服务托管文件",
-    usage="见文档 (https://github.com/nonebot/plugin-filehost#readme)",
+    usage=(
+        "Import FileHost and pass bytes, BytesIO, BufferedReader, Path, or str. "
+        "Call await FileHost(source).to_url() in async code, or "
+        "FileHost(source).to_url_sync() in sync code."
+    ),
     type="library",
     homepage="https://github.com/nonebot/plugin-filehost",
     config=FileHostConfig,
@@ -49,7 +54,7 @@ class HostContextVarMiddleware:
         }:
             type(self).current_scope.set(scope)
             try:
-                request_info = RequestScopeInfo.parse_obj(scope)
+                request_info = type_validate_python(RequestScopeInfo, scope)
                 logger.opt(colors=True).trace(f"Request info: <e>{request_info}</e>")
             except Exception:
                 logger.exception(f"Scope {scope=} deserialize failed:")
