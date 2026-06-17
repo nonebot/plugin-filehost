@@ -1,11 +1,11 @@
-from typing import Mapping, Optional, Sequence, Tuple
+from typing import Literal, Mapping, Optional, Sequence, Tuple
 
-from nonebot.compat import PYDANTIC_V2, ConfigDict
+from nonebot.compat import PYDANTIC_V2, ConfigDict, custom_validation
 from pydantic import BaseModel, IPvAnyAddress
 from starlette.datastructures import Headers
-from typing_extensions import Literal
 
 
+@custom_validation
 class RequestHeaders(Headers):
     @classmethod
     def __get_validators__(cls):
@@ -14,12 +14,12 @@ class RequestHeaders(Headers):
     @classmethod
     def validate(cls, value):
         if isinstance(value, Sequence) and all(
-            map(lambda e: isinstance(e, Sequence), value)
+            isinstance(element, Sequence) for element in value
         ):
             return cls(raw=value)  # type:ignore
         elif isinstance(value, Mapping):
-            if all(map(lambda k: isinstance(k, str), value.keys())) and all(
-                map(lambda v: isinstance(v, str), value.values())
+            if all(isinstance(key, str) for key in value.keys()) and all(
+                isinstance(item, str) for item in value.values()
             ):
                 return cls(headers=value)
             else:
